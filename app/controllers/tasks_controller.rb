@@ -64,17 +64,10 @@ class TasksController < ApplicationController
     end
   end
   
-  def execute  
-    cmd = @task.script.gsub(/\r/, '')
-    
-    
-    Open3.popen2e(cmd) do |stdin, stdout_err, wait_thr|      
-      @result = ""
-      while line = stdout_err.gets
-        @result += line
-      end
-
-    end
+  def execute
+    File.write('/home/deployer/tasks/' + @task.id + '/task', @task.script.gsub(/\r/, ''))
+    system('chmod u+x ' + '/home/deployer/tasks/' + @task.id + '/task')
+    @result = %x[/home/deployer/tasks/' + @task.id + '/task']
   end
 
   private
