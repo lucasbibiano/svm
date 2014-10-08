@@ -67,7 +67,7 @@ class TasksController < ApplicationController
   def execute  
     
     cmd = ""
-    cmd += 'sudo -i' if current_user.sudo_pass
+    cmd += 'sudo -i\n' if current_user.sudo_pass
     cmd += @task.script.gsub(/\r/, '')
     
     Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
