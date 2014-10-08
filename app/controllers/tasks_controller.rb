@@ -65,9 +65,9 @@ class TasksController < ApplicationController
   end
   
   def execute
-    File.write('/home/deployer/tasks/' + @task.id + '/task', @task.script.gsub(/\r/, ''))
-    system('chmod u+x ' + '/home/deployer/tasks/' + @task.id + '/task')
-    @result = %x[/home/deployer/tasks/' + @task.id + '/task']
+    File.write('/home/deployer/tasks/' + @task.id.to_s + '/task', @task.script.gsub(/\r/, ''))
+    system('chmod u+x ' + '/home/deployer/tasks/' + @task.id.to_s + '/task')
+    @result = %x[/home/deployer/tasks/' + @task.id.to_s + '/task']
   end
 
   private
