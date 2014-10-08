@@ -66,7 +66,7 @@ class TasksController < ApplicationController
     file = '/home/deployer/tasks/' + @task.id.to_s + '/task'
     
     File.write(file, @task.script.gsub(/\r/, ''))
-    system('chmod u+x ' file)
+    system('chmod u+x ' + file)
     @result = %x[#{file}]
   end
 
