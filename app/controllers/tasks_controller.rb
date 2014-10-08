@@ -1,4 +1,7 @@
+require 'open3'
+
 class TasksController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_task, only: [:show, :edit, :update, :destroy, :execute]
 
   # GET /tasks
@@ -61,8 +64,16 @@ class TasksController < ApplicationController
     end
   end
   
-  def execute   
-    @result = ` eval #{@task.script.gsub(/\r/, '')} `
+  def execute  
+    
+    cmd = ""
+    cmd += 'sudo -i' if current_user.sudo_pass
+    cmd += @task.script.gsub(/\r/, '')
+    
+    Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+      stdin.write(current_user.sudo_pass) if current_user.sudo_pass
+      @result = stdout.read
+    end
   end
 
   private
