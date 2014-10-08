@@ -1,5 +1,3 @@
-require 'open3'
-
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: [:show, :edit, :update, :destroy, :execute]
@@ -65,9 +63,11 @@ class TasksController < ApplicationController
   end
   
   def execute
-    File.write('/home/deployer/tasks/' + @task.id.to_s + '/task', @task.script.gsub(/\r/, ''))
-    system('chmod u+x ' + '/home/deployer/tasks/' + @task.id.to_s + '/task')
-    @result = %x[/home/deployer/tasks/' + @task.id.to_s + '/task']
+    file = '/home/deployer/tasks/' + @task.id.to_s + '/task'
+    
+    File.write(file, @task.script.gsub(/\r/, ''))
+    system('chmod u+x ' file)
+    @result = %x[#{file}]
   end
 
   private
