@@ -68,9 +68,7 @@ class TasksController < ApplicationController
     cmd = @task.script.gsub(/\r/, '')
     
     
-    Open3.popen2e(cmd) do |stdin, stdout_err, wait_thr|
-      stdin.write(current_user.sudo_pass) if current_user.sudo_pass
-      
+    Open3.popen2e(cmd) do |stdin, stdout_err, wait_thr|      
       @result = ""
       while line = stdout_err.gets
         @result += line
