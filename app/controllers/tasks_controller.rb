@@ -67,7 +67,7 @@ class TasksController < ApplicationController
     
     File.write(file, @task.script.gsub(/\r/, ''))
     system('chmod u+x ' + file)
-    @result = exec("su -C \"" + file + "\" -s /bin/sh deployer") 
+    @result = exec("su -c \"" + file + "\" -s /bin/sh deployer") 
   end
 
   private
