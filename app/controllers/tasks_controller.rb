@@ -67,7 +67,7 @@ class TasksController < ApplicationController
     
     File.write(file, @task.script.gsub(/\r/, ''))
     system('chmod u+x ' + file)
-    @result = %x[#{file}]
+    @result = exec(file)
   end
 
   private
